@@ -7,13 +7,21 @@ import { Writable, Transform } from "stream";
 import Adapters from "./src/adapters/index.js";
 import Functions from "./src/functions/index.js";
 import ConfigMetadata from "./src/ports/ConfigMetadata.js";
+
+import { fileURLToPath } from "url";
+const _fileName = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_fileName);
+
 export default class Ascii extends ConfigMetadata {
    constructor(data) {
       super(data);
       this.ev = new EventEmitter();
    }
    
-   listFonts(diretoryFonts = "./source/Fonts/") {
+   listFonts() {
+      let diretoryFonts = path.join(_dirname, "source/Fonts/");
+      if (this.fontDir) diretoryFonts = path.join(this.dir, this.fontDir);
+      
       const ListFontsPast = fs.readdirSync(diretoryFonts); 
       const pastFont = { all: [] };
       const openPastByFont = (dir, arr) => {
@@ -31,7 +39,7 @@ export default class Ascii extends ConfigMetadata {
                if (!(p in pastFont)) pastFont[p] = [];
                
                index = 0;
-               const openListFonts = dir+p+"/";
+               const openListFonts = path.join(dir, p+"/");
                for (const f of fs.readdirSync(openListFonts)) {
                   if (f.endsWith(".ttf")) {
                      pastFont[p].push({

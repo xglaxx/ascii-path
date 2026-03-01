@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 const asciiChars = {
    minimalist: "#+-.",
    normal: "@%#*+=-:.",
@@ -14,7 +16,7 @@ const asciiChars = {
    codepage437: "█▓▒░",
    codepage437v2: "░▒▓█",
    blockelement: "█"
-}; 
+};
 export default class SetMetadata {
    constructor() {
       this._scale = 8;
@@ -23,7 +25,7 @@ export default class SetMetadata {
       this._colorFont = "white";
       this._chars = asciiChars.normal3; // São caracteres para o nível de brilho/densidade.
       this._colorBackground = "black";
-      this._output = "./tmp/ascii-"+Date.now();
+      this._output = "tmp/ascii-"+Date.now();
    }
    
    isNumber(value) {
@@ -54,8 +56,15 @@ export default class SetMetadata {
    get output() {
       return this._output;
    }
-   set output(value) {
-      this._output = (typeof value === 'string' && value ? value : this._output);
+   set output(fileName) {
+      if (this.dir) {
+         this._output = path.join(this.dir, (fileName || this._output));
+         const patExt = this.path.split(".").pop();
+         const outExt = this._output.split(".").pop();
+         if (patExt !== outExt) {
+            this._output = this._output+(patExt === "mp4" ? ".mp4" : ".png");
+         }
+      }
    }
    
    get chars() {

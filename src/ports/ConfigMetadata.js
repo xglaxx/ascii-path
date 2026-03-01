@@ -10,19 +10,16 @@ export default class ConfigMetadata extends SetMetadata {
       if (typeof data !== "object") throw data;
       if (!(data?.path && fs.existsSync(data.path))) throw data;
       
+      this.dir = data?.dir;
       this.path = data?.path;
       this.scale = data?.scale;
       this.chars = data?.chars;
       this.output = data?.output;
+      this.fontDir = data?.fontDir;
       this.fontSize = data?.fontSize;
       this.colorFont = data?.colorFont;
       this.colorChars = data?.colorChars;
       this.colorBackground = data?.colorBackground;
-      const patExt = this.path.split(".").pop();
-      const outExt = this.output.split(".").pop();
-      if (patExt !== outExt) {
-         this.output = this.output+(patExt === "mp4" ? ".mp4" : ".png");
-      }
       this.changeFont(data?.font, data?.nameFont);
    }
 }
