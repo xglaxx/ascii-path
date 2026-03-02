@@ -19,6 +19,7 @@ const asciiChars = {
 };
 export default class SetMetadata {
    constructor() {
+      this._path = "";
       this._scale = 8;
       this._fontSize = 12;
       this._colorChars = false;
@@ -31,6 +32,18 @@ export default class SetMetadata {
    isNumber(value) {
       value = Number(value);
       return (!isNaN(value) ? value : 0);
+   }
+   
+   get path() {
+      return this._path;
+   }
+   set path(dirFile) {
+      if (!fs.existsSync(dirFile)) {
+         console.error("path-error:", "ARQUIVO NÃO ENCONTRADO =", dirFile);
+      }
+      
+      this._path = dirFile;
+      this.output = this._output;
    }
    
    get listChars() {
@@ -59,10 +72,12 @@ export default class SetMetadata {
    set output(fileName) {
       if (this.dir) {
          this._output = path.join(this.dir, (fileName || this._output));
-         const patExt = this.path.split(".").pop();
-         const outExt = this._output.split(".").pop();
-         if (patExt !== outExt) {
-            this._output = this._output+(patExt === "mp4" ? ".mp4" : ".png");
+         if (this.path) {
+            const patExt = this.path.split(".").pop();
+            const outExt = this._output.split(".").pop();
+            if (patExt !== outExt) {
+               this._output = this._output+(patExt === "mp4" ? ".mp4" : ".png");
+            }
          }
       }
    }
