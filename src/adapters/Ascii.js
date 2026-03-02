@@ -29,10 +29,8 @@ export default ((PImage, { frame, make, width, height }, dataAscii) => {
          
          const brightness = (0.2126 * r) + (0.7152 * g) + (0.0722 * b); //Novo
          const row = MapPixel(brightness, chars);
-         if (colorChars) {
-            ctx.fillStyle = `rgb(${r},${g},${b})`;
-            ctx.font = `${fontSize}pt `+fontName;
-         }
+         ctx.fillStyle = (colorChars ? `rgb(${r},${g},${b})` : colorFont);
+         ctx.font = `${fontSize}pt `+fontName;
          ctx.fillText(row, x, y);
          lines += row;
       }
