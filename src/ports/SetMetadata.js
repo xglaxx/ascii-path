@@ -39,11 +39,17 @@ export default class SetMetadata {
    }
    set path(dirFile) {
       if (!fs.existsSync(dirFile)) {
-         console.error("path-error:", "ARQUIVO NÃO ENCONTRADO =", dirFile);
+         console.error("ascii.path-error:", "ARQUIVO NÃO ENCONTRADO =", dirFile);
       }
       
       this._path = dirFile;
-      this.output = this._output;
+      if (this._output && dirFile) {
+         const patExt = this._path.split(".").pop();
+         const outExt = this._output.split(".").pop();
+         if (patExt !== outExt) {
+            this._output = this._output+(patExt === "mp4" ? ".mp4" : ".png");
+         }
+      }
    }
    
    get listChars() {
