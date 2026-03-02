@@ -160,7 +160,7 @@ export default class Ascii extends ConfigMetadata {
                if (time) {
                   this.ev.emit("ascii.frame", {
                      frame: this.isNumber(frame),
-                     sizeBytes: this.isNumber((this.isNumber(size) / 1024).toFixed(2)),
+                     sizeBytes: this.isNumber((parseInt(size) / 1024).toFixed(2)),
                      time: String(time),
                      speed: this.isNumber(speed),
                      elapsed: String(elapsed),
