@@ -160,7 +160,7 @@ export default class Ascii extends ConfigMetadata {
                if (time) {
                   this.ev.emit("ascii.frame", {
                      frame: this.isNumber(frame),
-                     sizeBytes: this.isNumber(size),
+                     sizeBytes: this.isNumber((this.isNumber(size) / 1024).toFixed(2)),
                      time: String(time),
                      speed: this.isNumber(speed),
                      elapsed: String(elapsed),
@@ -212,13 +212,13 @@ export default class Ascii extends ConfigMetadata {
    async imageToAscii() {
       let originalImg;
       if (!fs.existsSync(this.path)) {
-         throw new Error("Não existe nenhum arquivo apresentado!");
+         return Promise.reject("Não existe nenhum arquivo apresentado!");
       } else if (this.path.endsWith('.png')) {
          originalImg = await PImage.decodePNGFromStream(fs.createReadStream(this.path));
       } else if (this.path.endsWith('.jpg') || this.path.endsWith('.jpeg')) {
          originalImg = await PImage.decodeJPEGFromStream(fs.createReadStream(this.path));
       } else {
-         throw new Error("Formato de imagem não suportado (use PNG ou JPG)");
+         return Promise.reject("Formato de imagem não suportado (use PNG ou JPG)");
       }
       
       const { height, width } = originalImg;
