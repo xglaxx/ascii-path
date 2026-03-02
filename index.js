@@ -83,6 +83,8 @@ export default class Ascii extends ConfigMetadata {
    }
    
    async asciiToVideo() {
+      if (!(this?.path && fs.existsSync(this.path))) return Promise.reject({ message: "Arquivo não foi encontrado!" });
+      
       return Adapters.MetadataFfprobe(this.path).then(({ fps, frames, width, height }) => {
          const frameSize = ((width * height) * 3);
          const decoder = Adapters.DecoderFfmpeg(this.path, { width, height }); // Abrir o arquivo e extrair os frames

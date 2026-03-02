@@ -8,7 +8,6 @@ export default class ConfigMetadata extends SetMetadata {
    
    _set(data) {
       if (typeof data !== "object") throw data;
-      if (!(data?.path && fs.existsSync(data.path))) throw data;
       
       this.dir = data?.dir;
       this.path = data?.path;

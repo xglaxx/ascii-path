@@ -1,6 +1,6 @@
 {
   "name": "ascii-path",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "Converter imagem ou vídeo em Ascii.",
   "main": "index.js",
   "bin": {
